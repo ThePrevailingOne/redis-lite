@@ -1,4 +1,5 @@
 use bytes::BytesMut;
+use log::info;
 use std::net::SocketAddr;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
@@ -16,7 +17,7 @@ pub fn create_session(socket: TcpStream, client_id: SocketAddr) -> Session {
 }
 
 pub async fn handle_session(session: Session) -> Result<(), Box<dyn std::error::Error>> {
-    println!(
+    info!(
         "This is a connection from {}",
         session.client_id.to_string()
     );
@@ -31,11 +32,11 @@ pub async fn handle_session(session: Session) -> Result<(), Box<dyn std::error::
 
         // if bytes_read is zero, then connection should be closed
         if bytes_read == 0 {
-            println!("Connection from {} closed", session.client_id.to_string());
+            info!("Connection from {} closed", session.client_id.to_string());
             break;
         }
 
-        println!(
+        info!(
             "Client from {} send {} bytes: {:?}",
             session.client_id.to_string(),
             bytes_read,

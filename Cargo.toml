@@ -8,3 +8,9 @@ edition = "2021"
 [dependencies]
 tokio = { version = "1.34.0", features = ["full"] }
 bytes = "1"
+log = "0.4.20"
+env_logger = "0.10.1"
+
+[scripts]
+run = "cargo run"
+dev = "RUST_LOG=trace cargo run "
