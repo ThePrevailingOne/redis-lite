@@ -29,9 +29,9 @@
     - [x] Use async and create "tasks" (kind of like goroutines) 
     - [x] Create Session
     - [x] ~~Create SessionManager~~
-    - [ ] Implement barebone handle_session
-      - [ ] Read user input
-      - [ ] Respond to user
+    - [x] Implement barebone handle_session
+      - [x] Read user input
+      - [x] Respond to user
     - [x] Incorporate
   - [ ] Tokenize request
     - [ ] Create RequestTokens
