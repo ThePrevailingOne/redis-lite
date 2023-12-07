@@ -14,6 +14,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let (socket, addr) = listener.accept().await?;
         let session = session::create_session(socket, addr);
         println!("Got a client!");
-        session::handle_session(session);
+        session::handle_session(session).await?;
     }
 }

@@ -189,6 +189,7 @@ dependencies = [
 name = "redis-lite"
 version = "0.1.0"
 dependencies = [
+ "bytes",
  "tokio",
 ]
 
