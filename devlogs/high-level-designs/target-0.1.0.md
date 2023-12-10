@@ -37,10 +37,10 @@
     - [ ] ~~Create RequestTokens~~
     - [ ] ~~Create RequestTokenizer (or just a func of it)~~
     - [ ] ~~Incorporate~~
-  - [ ] Parse ~~tokens to~~ request
-    - [ ] Create Request
+  - [x] Parse ~~tokens to~~ request
+    - [x] Create Request
     - [ ] Create RequestParser (or just a func of it)
-    - [ ] Incorporate
+    - [x] Incorporate
   - [ ] Transform request to commands via CommandManager
     - [ ] Create Command
       - [ ] PING
@@ -74,4 +74,10 @@
 - Since there is no inheritance, interface can be segregated into multiple traits
 - To traverse buffer effectively, using reference effectively should pay off
 - Using Rust enum gives a nice (yet unusual) approach to enumerating a class
-
+- Ownership & reference is once again a bit confusing (TODO: need to read more abt this)
+- TODO: optimization/design
+  - Parsing can be faster for bulk string (since length is given)
+  - Create a parser class (have the parser store the buffer/reference the buffer)
+    - So all parsing functions have a unified access to the buffer without passing over and over again across parameters
+    - Lifetime of buffer is more obvious
+    
