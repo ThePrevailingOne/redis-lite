@@ -4,6 +4,8 @@ use std::net::SocketAddr;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 
+use crate::request::parse_request;
+
 const DEFAULT_RESPONSE: &[u8; 7] = b"+PONG\r\n";
 const BUF_SIZE: usize = 1024;
 
@@ -43,7 +45,16 @@ pub async fn handle_session(session: Session) -> Result<(), Box<dyn std::error::
             &buffer
         );
 
+        // parse request
+        parse_request(&buffer[..]);
+
+        // process request
+
+        // respond to client
         socket.write(&DEFAULT_RESPONSE[..]).await?;
+
+        // clear buffer
+        buffer.clear();
     }
 
     Ok(())

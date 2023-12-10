@@ -10,6 +10,14 @@ Memory data types that can be stored will also be limited to:
 - key: string
 - value: string
 
+To allow the server to work with redis-cli client, we will adapt with the format of RESP. To accomodate most needs of the command, the main data types supported for MVP are:
+- Simple string
+- Simple Errors
+- Integers
+- Bulk strings
+- Arrays
+- Nulls
+
 ### Target 0.1.1
 In the next milestone, the target will be aimed at handling other data types:
 - key: string, int
