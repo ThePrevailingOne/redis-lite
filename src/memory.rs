@@ -2,19 +2,35 @@ use std::collections::HashMap;
 
 use bytes::Bytes;
 
-enum Frame {
+pub enum Frame {
     String(String),
     Integer(i32),
 }
 
-struct Memory<'mem> {
-    kv_table: HashMap<&'mem str, Frame>,
+pub struct Memory {
+    kv_table: HashMap<&'static str, Frame>,
 }
 
 impl Frame {
     pub fn string_frame(bytes: &Bytes) -> Self {
         let s: &[u8] = bytes.as_ref();
         Frame::String(String::from_utf8_lossy(s).to_string())
+    }
+}
+
+impl Memory {
+    pub fn new() -> Self {
+        Memory {
+            kv_table: HashMap::new(),
+        }
+    }
+
+    pub fn set(&mut self, key: &'static str, frame: Frame) {
+        self.kv_table.insert(key, frame);
+    }
+
+    pub fn get(&self, key: &'static str) -> &Frame {
+        self.kv_table.get(key).unwrap()
     }
 }
 

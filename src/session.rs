@@ -1,21 +1,30 @@
 use bytes::BytesMut;
 use log::info;
 use std::net::SocketAddr;
+use std::sync::{Arc, Mutex};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 
+use crate::memory::Memory;
 use crate::request::parse_request;
+
+type MemoryArc = Arc<Mutex<Memory>>;
 
 const DEFAULT_RESPONSE: &[u8; 7] = b"+PONG\r\n";
 const BUF_SIZE: usize = 1024;
 
 pub struct Session {
     client_id: SocketAddr,
+    memory: MemoryArc,
     socket: TcpStream,
 }
 
-pub fn create_session(socket: TcpStream, client_id: SocketAddr) -> Session {
-    Session { client_id, socket }
+pub fn create_session(socket: TcpStream, client_id: SocketAddr, memory: MemoryArc) -> Session {
+    Session {
+        client_id,
+        socket,
+        memory,
+    }
 }
 
 pub async fn handle_session(session: Session) -> Result<(), Box<dyn std::error::Error>> {
