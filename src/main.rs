@@ -1,6 +1,7 @@
 mod memory;
 mod request;
 mod resp;
+mod response;
 mod session;
 
 use std::sync::{Arc, Mutex};

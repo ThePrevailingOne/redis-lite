@@ -2,6 +2,9 @@ use std::collections::VecDeque;
 
 use bytes::Bytes;
 
+pub const CLRF: &[u8; 2] = b"\r\n";
+pub const CLRF_LEN: usize = 2;
+
 pub struct SimpleRESP {
     pub value: Bytes,
 }

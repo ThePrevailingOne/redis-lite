@@ -4,9 +4,6 @@ use std::collections::VecDeque;
 use bytes::Bytes;
 use log::info;
 
-const CLRF: &[u8; 2] = b"\r\n";
-const CLRF_LEN: usize = 2;
-
 pub fn parse_request(buffer: &[u8]) {
     if buffer.is_empty() {
         log::error!("Buffer is empty!");
