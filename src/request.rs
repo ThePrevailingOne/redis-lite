@@ -1,3 +1,4 @@
+use crate::resp::*;
 use std::collections::VecDeque;
 
 use bytes::Bytes;
@@ -5,24 +6,6 @@ use log::info;
 
 const CLRF: &[u8; 2] = b"\r\n";
 const CLRF_LEN: usize = 2;
-
-pub struct SimpleRESP {
-    value: Bytes,
-}
-
-pub struct AggregateRESP {
-    children: VecDeque<RESPData>,
-}
-
-pub enum RESPData {
-    SimpleString(SimpleRESP),
-    SimpleError(SimpleRESP),
-    Integer(SimpleRESP),
-    Array(AggregateRESP),
-    BulkString(AggregateRESP),
-    NoType(SimpleRESP),
-    Null,
-}
 
 pub fn parse_request(buffer: &[u8]) {
     if buffer.is_empty() {
