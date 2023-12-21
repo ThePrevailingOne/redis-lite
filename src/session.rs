@@ -7,8 +7,9 @@ use tokio::net::TcpStream;
 
 use crate::memory::Memory;
 use crate::request::parse_request;
+use crate::{commands, response};
 
-type MemoryArc = Arc<Mutex<Memory>>;
+pub type MemoryArc = Arc<Mutex<Memory>>;
 
 const DEFAULT_RESPONSE: &[u8; 7] = b"+PONG\r\n";
 const BUF_SIZE: usize = 1024;
@@ -27,14 +28,18 @@ pub fn create_session(socket: TcpStream, client_id: SocketAddr, memory: MemoryAr
     }
 }
 
-pub async fn handle_session(session: Session) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn handle_session(mut session: Session) -> Result<(), Box<dyn std::error::Error>> {
     info!(
         "This is a connection from {}",
         session.client_id.to_string()
     );
 
     // initialize buffer & get socket + client_id string
+    let comm_factory = commands::CommandFactory {
+        memory: &mut session.memory,
+    };
     let mut buffer = BytesMut::with_capacity(BUF_SIZE);
+    let mut resp_buffer = BytesMut::with_capacity(BUF_SIZE);
     let mut socket = session.socket;
 
     // read tcpstream input
@@ -55,15 +60,24 @@ pub async fn handle_session(session: Session) -> Result<(), Box<dyn std::error::
         );
 
         // parse request
-        parse_request(&buffer[..]);
+        let req = parse_request(&buffer[..]);
 
-        // process request
+        {
+            // process request
+            let comm = comm_factory.create_command(req);
+
+            // execute command
+            let resp = comm.execute();
+
+            response::serialize_resp(resp, &mut resp_buffer);
+        }
 
         // respond to client
-        socket.write(&DEFAULT_RESPONSE[..]).await?;
+        socket.write(&resp_buffer).await?;
 
         // clear buffer
         buffer.clear();
+        resp_buffer.clear();
     }
 
     Ok(())

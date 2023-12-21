@@ -1,3 +1,4 @@
+mod commands;
 mod memory;
 mod request;
 mod resp;

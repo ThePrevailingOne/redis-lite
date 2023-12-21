@@ -4,13 +4,13 @@ use std::collections::VecDeque;
 use bytes::Bytes;
 use log::info;
 
-pub fn parse_request(buffer: &[u8]) {
+pub fn parse_request(buffer: &[u8]) -> RESPData {
     if buffer.is_empty() {
         log::error!("Buffer is empty!");
-        return;
     }
 
-    construct_data(buffer);
+    let (_, data) = construct_data(buffer);
+    data
 }
 
 pub fn construct_data(mut buffer: &[u8]) -> (&[u8], RESPData) {
