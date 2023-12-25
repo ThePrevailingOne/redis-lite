@@ -4,16 +4,21 @@ use crate::resp::*;
 
 pub fn serialize_resp(data: RESPData, bytes: &mut BytesMut) {
     // TODO: populate for other data type
-    serialize_simple_string(data, bytes);
-}
-
-fn serialize_simple_string(data: RESPData, bytes: &mut BytesMut) {
     match data {
-        RESPData::SimpleString(s) => {
-            bytes.extend_from_slice(b"+");
-            bytes.extend_from_slice(&s.value.as_ref());
-            bytes.extend_from_slice(CLRF);
-        }
+        RESPData::SimpleString(s) => serialize_simple_string(s, bytes),
+        RESPData::SimpleError(s) => serialize_simple_error(s, bytes),
         _ => {}
     };
+}
+
+fn serialize_simple_string(data: SimpleRESP, bytes: &mut BytesMut) {
+    bytes.extend_from_slice(b"+");
+    bytes.extend_from_slice(data.value.as_ref());
+    bytes.extend_from_slice(CLRF);
+}
+
+fn serialize_simple_error(data: SimpleRESP, bytes: &mut BytesMut) {
+    bytes.extend_from_slice(b"-");
+    bytes.extend_from_slice(data.value.as_ref());
+    bytes.extend_from_slice(CLRF);
 }
