@@ -5,14 +5,17 @@ use bytes::{Bytes, BytesMut};
 pub const CLRF: &[u8; 2] = b"\r\n";
 pub const CLRF_LEN: usize = 2;
 
+#[derive(Debug)]
 pub struct SimpleRESP {
     pub value: Bytes,
 }
 
+#[derive(Debug)]
 pub struct AggregateRESP {
     pub children: VecDeque<RESPData>,
 }
 
+#[derive(Debug)]
 pub enum RESPData {
     SimpleString(SimpleRESP),
     SimpleError(SimpleRESP),

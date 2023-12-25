@@ -16,3 +16,9 @@ impl Command for Ping {
         RESPData::SimpleString(simple)
     }
 }
+
+impl Ping {
+    pub fn new() -> Box<dyn Command> {
+        Box::new(Ping {})
+    }
+}

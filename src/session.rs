@@ -64,7 +64,7 @@ pub async fn handle_session(mut session: Session) -> Result<(), Box<dyn std::err
 
         {
             // process request
-            let comm = comm_factory.create_command(req);
+            let comm = comm_factory.create_command(&req);
 
             // execute command
             let resp = comm.execute();
