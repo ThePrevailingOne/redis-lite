@@ -1,4 +1,5 @@
 mod echo;
+mod not_found;
 mod ping;
 
 use log::warn;
@@ -27,10 +28,10 @@ impl<'cf> CommandFactory<'cf> {
             match comm_key.to_ascii_uppercase().as_slice() {
                 b"PING" => ping::Ping::new(),
                 b"ECHO" => echo::Echo::new(&data),
-                _ => ping::Ping::new(),
+                _ => not_found::NotFound::new("Command not found"),
             }
         } else {
-            ping::Ping::new()
+            not_found::NotFound::new("Not a proper command")
         }
     }
 }
