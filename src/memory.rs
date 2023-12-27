@@ -8,7 +8,7 @@ pub enum Frame {
 }
 
 pub struct Memory {
-    kv_table: HashMap<&'static str, Frame>,
+    kv_table: HashMap<Bytes, Frame>,
 }
 
 impl Frame {
@@ -25,12 +25,12 @@ impl Memory {
         }
     }
 
-    pub fn set(&mut self, key: &'static str, frame: Frame) {
+    pub fn set(&mut self, key: Bytes, frame: Frame) {
         self.kv_table.insert(key, frame);
     }
 
-    pub fn get(&self, key: &'static str) -> &Frame {
-        self.kv_table.get(key).unwrap()
+    pub fn get(&self, key: Bytes) -> &Frame {
+        self.kv_table.get(&key).unwrap()
     }
 }
 
@@ -61,14 +61,16 @@ mod tests {
         let bytes = Bytes::from_static(b"Hello World!");
         let frame = Frame::string_frame(&bytes);
 
-        memory.kv_table.insert("test", frame);
+        memory
+            .kv_table
+            .insert(Bytes::from_static("test".as_bytes()), frame);
 
         assert!(matches!(
-            memory.kv_table.get("test").unwrap(),
+            memory.get(Bytes::from_static("test".as_bytes())),
             Frame::String(_)
         ));
 
-        if let Frame::String(s) = memory.kv_table.get("test").unwrap() {
+        if let Frame::String(s) = memory.get(Bytes::from_static("test".as_bytes())) {
             assert_eq!(s, &String::from("Hello World!"));
         }
     }

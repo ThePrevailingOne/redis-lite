@@ -1,6 +1,8 @@
 mod echo;
+mod get;
 mod not_found;
 mod ping;
+mod set;
 
 use log::warn;
 
@@ -15,7 +17,7 @@ pub struct CommandFactory<'cf> {
 }
 
 impl<'cf> CommandFactory<'cf> {
-    pub fn create_command(&self, data: &'cf RESPData) -> Box<dyn Command + 'cf> {
+    pub fn create_command(&'cf self, data: &'cf RESPData) -> Box<dyn Command + 'cf> {
         if !matches!(data, RESPData::Array(_)) {
             warn!("RESP data received not array");
         }
@@ -28,6 +30,7 @@ impl<'cf> CommandFactory<'cf> {
             match comm_key.to_ascii_uppercase().as_slice() {
                 b"PING" => ping::Ping::new(),
                 b"ECHO" => echo::Echo::new(&data),
+                b"SET" => set::Set::new(&data, self.memory),
                 _ => not_found::NotFound::new("Command not found"),
             }
         } else {
