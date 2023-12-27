@@ -16,6 +16,13 @@ impl Frame {
         let s: &[u8] = bytes.as_ref();
         Frame::String(String::from_utf8_lossy(s).to_string())
     }
+
+    pub fn string_value(&self) -> String {
+        match self {
+            Frame::String(s) => s.clone(),
+            Frame::Integer(i) => i.to_string(),
+        }
+    }
 }
 
 impl Memory {

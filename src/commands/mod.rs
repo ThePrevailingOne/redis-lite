@@ -31,6 +31,7 @@ impl<'cf> CommandFactory<'cf> {
                 b"PING" => ping::Ping::new(),
                 b"ECHO" => echo::Echo::new(&data),
                 b"SET" => set::Set::new(&data, self.memory),
+                b"GET" => get::Get::new(&data, self.memory),
                 _ => not_found::NotFound::new("Command not found"),
             }
         } else {
