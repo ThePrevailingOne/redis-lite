@@ -17,10 +17,12 @@ pub struct Get<'a> {
 impl Command for Get<'_> {
     fn execute(&self) -> RESPData {
         let mem = self.mem.lock().unwrap();
-        let frame = mem.get(self.key.clone());
-        RESPData::SimpleString(SimpleRESP {
-            value: Bytes::from(frame.string_value()),
-        })
+        match mem.get(self.key.clone()) {
+            Ok(frame) => RESPData::SimpleString(SimpleRESP {
+                value: Bytes::from(frame.string_value()),
+            }),
+            Err(err) => err,
+        }
     }
 }
 

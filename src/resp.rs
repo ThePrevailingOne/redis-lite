@@ -39,3 +39,11 @@ pub fn bytes_from_bulk_string(data: &RESPData) -> Bytes {
 
     bytes.freeze()
 }
+
+impl RESPData {
+    pub fn new_simple_error(s: &String) -> RESPData {
+        RESPData::SimpleError(SimpleRESP {
+            value: Bytes::copy_from_slice(s.as_bytes()),
+        })
+    }
+}

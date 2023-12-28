@@ -2,6 +2,8 @@ use std::collections::HashMap;
 
 use bytes::Bytes;
 
+use crate::resp::RESPData;
+
 pub enum Frame {
     String(String),
     Integer(i32),
@@ -36,8 +38,14 @@ impl Memory {
         self.kv_table.insert(key, frame);
     }
 
-    pub fn get(&self, key: Bytes) -> &Frame {
-        self.kv_table.get(&key).unwrap()
+    pub fn get(&self, key: Bytes) -> Result<&Frame, RESPData> {
+        match self.kv_table.get(&key) {
+            Some(o) => Ok(o),
+            None => Err(RESPData::new_simple_error(&format!(
+                "Key not found: {}",
+                String::from_utf8_lossy(&key)
+            ))),
+        }
     }
 }
 
@@ -73,11 +81,11 @@ mod tests {
             .insert(Bytes::from_static("test".as_bytes()), frame);
 
         assert!(matches!(
-            memory.get(Bytes::from_static("test".as_bytes())),
+            memory.get(Bytes::from_static("test".as_bytes())).unwrap(),
             Frame::String(_)
         ));
 
-        if let Frame::String(s) = memory.get(Bytes::from_static("test".as_bytes())) {
+        if let Frame::String(s) = memory.get(Bytes::from_static("test".as_bytes())).unwrap() {
             assert_eq!(s, &String::from("Hello World!"));
         }
     }

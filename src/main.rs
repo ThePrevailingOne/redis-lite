@@ -32,7 +32,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         tokio::spawn(async move {
             let session = session::create_session(socket, addr, mem);
-            session::handle_session(session).await;
+            let _ = session::handle_session(session).await;
         });
     }
 }
