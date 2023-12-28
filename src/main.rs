@@ -1,4 +1,12 @@
+mod commands;
+mod err;
+mod memory;
+mod request;
+mod resp;
+mod response;
 mod session;
+
+use std::sync::{Arc, Mutex};
 
 use env_logger;
 use log::info;
@@ -14,9 +22,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let listener = TcpListener::bind(LOCALHOST_ADDR).await?;
 
+    let mem = memory::Memory::new();
+    let mem = Arc::new(Mutex::new(mem));
+
     loop {
         let (socket, addr) = listener.accept().await?;
-        let session = session::create_session(socket, addr);
-        session::handle_session(session).await?;
+
+        let mem = mem.clone();
+
+        tokio::spawn(async move {
+            let session = session::create_session(socket, addr, mem);
+            let _ = session::handle_session(session).await;
+        });
     }
 }
