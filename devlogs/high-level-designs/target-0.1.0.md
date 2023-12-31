@@ -28,34 +28,20 @@
   - [x] Manage multiple user sessions
     - [x] Use async and create "tasks" (kind of like goroutines) 
     - [x] Create Session
-    - [x] ~~Create SessionManager~~
-    - [x] Implement barebone handle_session
-      - [x] Read user input
-      - [x] Respond to user
-    - [x] Incorporate
-  - [ ] ~~Tokenize request~~
-    - [ ] ~~Create RequestTokens~~
-    - [ ] ~~Create RequestTokenizer (or just a func of it)~~
-    - [ ] ~~Incorporate~~
-  - [x] Parse ~~tokens to~~ request
+   - [x] Implement barebone handle_session
+    - [x] Read user input
+    - [x] Respond to user
+  - [x] Parse request
     - [x] Create Request
-    - [ ] Create RequestParser (or just a func of it)
-    - [x] Incorporate
-  - [ ] ~~Transform request to commands via CommandManager~~
-    - [x] Create Command
-      - [x] PING
-      - [x] ECHO
-      - [x] GET
-      - [x] SET
-    - [ ] ~~Create CommandManager (or just a function of it)~~
-    - [x] Incorporate
+  - [x] Create Command
+    - [x] PING
+    - [x] ECHO
+    - [x] GET
+    - [x] SET
   - [x] Implement Memory
     - [x] Create Memory
-    - [ ] ~~Create MemoryManager (add MPSC + task)~~
-    - [x] Incorporate
   - [x] Implement Response
     - [x] Create Response
-    - [x] Incorporate
     
 
 - It should be preferable to create unit tests and place the mods and crates in the right folder

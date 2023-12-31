@@ -25,7 +25,7 @@ In the next milestone, the target will be aimed at handling other data types:
 
 ### Target 0.2.0
 In the next milestone, the target will be ainmed at persistence handling, which can be broken down to:
-- usage of write-ahead log (WA)L append-only file (AOF); along with
+- usage of write-ahead log (WAL) append-only file (AOF); along with
 - periodic in-memory storage snapshot flush to disk
 
 ### Target 0.3.0
