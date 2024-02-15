@@ -1,5 +1,4 @@
 mod commands;
-mod err;
 mod memory;
 mod request;
 mod resp;
